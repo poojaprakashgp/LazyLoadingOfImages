@@ -24,28 +24,42 @@ let images = document.querySelectorAll('.images');
 let lastImage = document.querySelector('.images:last-child')
 let imageObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry)=>{
-        if(entry.isIntersecting || entry.intersectionRatio>0.15){
-            if(document.querySelectorAll('.images').length<20){
-                addImageElements('img');
-                imageObserver.unobserve(entry.target);
-                imageObserver.unobserve(lastImage);
-            }
+        if(entry.isIntersecting){
+           let lazyload = entry.target;
+           lazyload.src = lazyload.dataset.src;
+           lazyload?.classList?.remove('lzy_img');
+           if(document.querySelectorAll('.lzy_img').length<20){
+            addImageElements('img');
+           // imageObserver.unobserve(entry.target);
+           // imageObserver.unobserve(lastImage);
+           }
+           imageObserver.unobserve(lazyload)
+            
             
         }
     })
-},{root:imagesContiner, rootMargin:'-200px'})
-imageObserver.observe(lastImage);
+},{threshold:0.15})
+// imageObserver.observe(lastImage);
+let Loadimages = document.querySelectorAll('.lzy_img');
+Loadimages.forEach((img)=>{
+    imageObserver.observe(img)
+})
+
 let count = 1;
 function addImageElements(type){
    for(let i=0;i<=5;i++){
      let image = document.createElement(type);
-     image.classList.add('images');
+    //  image.classList.add('images');
+     image.classList.add('lzy_img');
      image.alt = 'new image falied'
-     image.src = imageUrls[count++];
+     image.src = "./assets/blur.jpg";
+     image.dataset.src = imageUrls[count++]
+     //count++;
      if(count <= 20){
         imagesContiner.appendChild(image);
+        imageObserver.observe(image)
      }
-     imageObserver.observe(image)
+     
    }
 }
 function pickRandomImage(){
