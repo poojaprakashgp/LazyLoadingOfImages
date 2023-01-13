@@ -12,7 +12,7 @@ let lastImage = document.querySelector('.images:last-child')
 let imageObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry)=>{
         if(entry.isIntersecting || entry.intersectionRatio>0.15){
-            if(document.querySelectorAll('.images').length<=10){
+            if(document.querySelectorAll('.images').length<=100){
                 addImageElements('img');
                 imageObserver.unobserve(entry.target);
                 imageObserver.unobserve(lastImage);
