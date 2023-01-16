@@ -39,16 +39,16 @@ let imageObserver = new IntersectionObserver((entries) => {
             
         }
     })
-},{threshold:0.15})
+},{threshold:0.15, rootMargin:"100px"})
 // imageObserver.observe(lastImage);
-let Loadimages = document.querySelectorAll('.lzy_img');
-Loadimages.forEach((img)=>{
-    imageObserver.observe(img)
-})
+let Loadimages = document.querySelector('.lzy_img:last-child');
+// Loadimages.forEach((img)=>{
+    imageObserver.observe(imagesContiner)
+// })
 
 let count = 1;
 function addImageElements(type){
-   for(let i=0;i<=5;i++){
+   //for(let i=0;i<=5;i++){
      let image = document.createElement(type);
     //  image.classList.add('images');
      image.classList.add('lzy_img');
@@ -56,12 +56,12 @@ function addImageElements(type){
      image.src = blurImageurl;
      image.dataset.src = imageUrls[count++]
      //count++;
-     if(count <= 20){
+     if(count < 20){
         imagesContiner.appendChild(image);
         imageObserver.observe(image)
      }
      
-   }
+   //}
 }
 function pickRandomImage(){
     let val = Math.floor(Math.random()*imageUrls.length);
