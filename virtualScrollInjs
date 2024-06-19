@@ -1,0 +1,35 @@
+// Example data (replace with your actual data)
+const items = Array.from({ length: 1000 }, (_, index) => `Item ${index}`);
+
+const container = document.querySelector('.scroll-container');
+const content = document.querySelector('.scroll-content');
+
+function renderItems(start, end) {
+  for (let i = start; i <= end; i++) {
+    const item = document.createElement('div');
+    item.textContent = items[i];
+    content.appendChild(item);
+  }
+}
+
+function calculateVisibleItems() {
+  const containerRect = container.getBoundingClientRect();
+  const itemHeight = 20; // Adjust based on your item's actual height
+
+  const start = Math.floor(container.scrollTop / itemHeight);
+  const end = start + Math.ceil(containerRect.height / itemHeight);
+
+  return { start, end };
+}
+
+function handleScroll() {
+  content.innerHTML = ''; // Clear previous items
+  const { start, end } = calculateVisibleItems();
+  renderItems(start, Math.min(end, items.length - 1));
+}
+
+// Initial render
+handleScroll();
+
+// Listen to scroll events
+container.addEventListener('scroll', handleScroll);
